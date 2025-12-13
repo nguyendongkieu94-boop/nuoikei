@@ -1,181 +1,239 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<title>DỰ ÁN NUÔI KEI 🐱</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>DỰ ÁN NUÔI KEI 🐱</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body{
-  font-family: system-ui, sans-serif;
-  background: linear-gradient(135deg,#ffb347,#fff3e0);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:100vh;
-  margin:0;
-}
-.game{
-  width:320px;
-  background:#fffdf8;
-  border-radius:22px;
-  padding:20px;
-  box-shadow:0 12px 30px rgba(255,152,0,.3);
-  text-align:center;
-}
-.pet{font-size:80px;margin:10px 0}
-.bar{background:#eee;border-radius:10px;overflow:hidden;margin-bottom:8px}
-.bar-inner{height:10px;background:linear-gradient(90deg,#ff9800,#ffd54f)}
-button{
-  padding:10px;
-  border:none;
-  border-radius:14px;
-  background:linear-gradient(135deg,#ffb74d,#ff9800);
-  margin:4px;
-  font-weight:600;
-  cursor:pointer;
-}
-input,textarea{
-  width:100%;
-  margin-top:6px;
-  padding:8px;
-  border-radius:10px;
-  border:1px solid #ddd;
-}
-#status{font-size:12px;margin-top:6px}
-</style>
+  <style>
+    body{
+      font-family: system-ui, sans-serif;
+      background: linear-gradient(135deg,#ffb347,#fff3e0);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:100vh;
+      margin:0;
+    }
+    .game{
+      width:320px;
+      background:#fffdf8;
+      border-radius:22px;
+      padding:20px;
+      box-shadow:0 12px 30px rgba(255,152,0,.3);
+      text-align:center;
+    }
+    .pet{
+      font-size:80px;
+      margin:10px 0;
+    }
+    .bar{
+      background:#eee;
+      border-radius:10px;
+      overflow:hidden;
+      margin-bottom:8px;
+    }
+    .bar-inner{
+      height:10px;
+      background:linear-gradient(90deg,#ff9800,#ffd54f);
+      width:100%;
+      transition: width 0.3s;
+    }
+    button{
+      padding:10px;
+      border:none;
+      border-radius:14px;
+      background:linear-gradient(135deg,#ffb74d,#ff9800);
+      margin:4px;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow:0 8px 20px rgba(255,152,0,.35);
+      transition:transform .1s,box-shadow .1s;
+    }
+    button:active{
+      transform:translateY(1px);
+      box-shadow:0 4px 10px rgba(255,152,0,.35);
+    }
+    input,textarea{
+      width:100%;
+      margin-top:6px;
+      padding:8px;
+      border-radius:10px;
+      border:1px solid #ddd;
+      font-family:inherit;
+      font-size:14px;
+    }
+    #status{
+      font-size:12px;
+      margin-top:6px;
+      min-height:1.2em;
+    }
+
+    /* ====== ANIMATIONS & EFFECTS ====== */
+    @keyframes pop {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-3px); }
+      50% { transform: translateX(3px); }
+      75% { transform: translateX(-3px); }
+      100% { transform: translateX(0); }
+    }
+
+    @keyframes floatUp {
+      from { transform: translateY(0); opacity: 1; }
+      to   { transform: translateY(-60px); opacity: 0; }
+    }
+
+    button.sending {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .heart {
+      position: fixed;
+      font-size: 18px;
+      animation: floatUp 1.2s ease-out forwards;
+      pointer-events:none;
+    }
+
+    .shake {
+      animation: shake 0.4s;
+    }
+  </style>
 </head>
 
 <body>
+  <div class="game">
+    <h2>DỰ ÁN NUÔI KEI 🐱</h2>
 
-<div class="game">
-<h2>DỰ ÁN NUÔI KEI 🐱</h2>
+    <div id="pet" class="pet">😺</div>
 
-<div id="pet" class="pet">😺</div>
+    🍚 Đói
+    <div class="bar"><div id="hunger" class="bar-inner"></div></div>
+    😊 Vui
+    <div class="bar"><div id="happy" class="bar-inner"></div></div>
+    💤 Pin
+    <div class="bar"><div id="energy" class="bar-inner"></div></div>
 
-🍚 Đói
-<div class="bar"><div id="hunger" class="bar-inner"></div></div>
-😊 Vui
-<div class="bar"><div id="happy" class="bar-inner"></div></div>
-💤 Pin
-<div class="bar"><div id="energy" class="bar-inner"></div></div>
+    <button onclick="feed()">🍚 Cho ăn</button>
+    <button onclick="play()">🎈 Chơi</button>
+    <button onclick="sleepPet()">💤 Ngủ</button>
 
-<button onclick="feed()">🍚 Cho ăn</button>
-<button onclick="play()">🎈 Chơi</button>
-<button onclick="sleepPet()">💤 Ngủ</button>
+    <hr>
 
-<hr>
+    <strong>💌 Gửi lời nhắn cho Kei</strong>
+    <input id="guestName" placeholder="Bạn là ai nè 🐾">
+    <textarea id="guestMsg" rows="3" placeholder="Nói gì đó dịu dàng cho Kei đi~"></textarea>
+    <button id="sendBtn" onclick="sendMessage()">💖 Gửi</button>
+    <div id="status"></div>
+  </div>
 
-<strong>💌 Gửi lời nhắn cho Kei</strong>
-<input id="guestName" placeholder="Bạn là ai nè 🐾">
-<textarea id="guestMsg" rows="3" placeholder="Nói gì đó dịu dàng cho Kei đi~"></textarea>
-<button id="sendBtn" onclick="sendMessage()">💖 Gửi</button>
-<div id="status"></div>
-</div>
-@keyframes pop {
-  0% { transform: scale(1); }
-  40% { transform: scale(1.15); }
-  100% { transform: scale(1); }
-}
+  <!-- GAME LOGIC -->
+  <script>
+    let hunger = 100, happy = 100, energy = 100;
 
-@keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-3px); }
-  50% { transform: translateX(3px); }
-  75% { transform: translateX(-3px); }
-  100% { transform: translateX(0); }
-}
+    const hungerBar = document.getElementById('hunger');
+    const happyBar  = document.getElementById('happy');
+    const energyBar = document.getElementById('energy');
 
-button.sending {
-  opacity: 0.7;
-  pointer-events: none;
-}
+    function updateBars(){
+      hunger = Math.max(0, Math.min(100, hunger));
+      happy  = Math.max(0, Math.min(100, happy));
+      energy = Math.max(0, Math.min(100, energy));
 
-.heart {
-  position: fixed;
-  font-size: 18px;
-  animation: floatUp 1.2s ease-out forwards;
-}
+      hungerBar.style.width = hunger + '%';
+      happyBar.style.width  = happy  + '%';
+      energyBar.style.width = energy + '%';
+    }
 
-@keyframes floatUp {
-  from { transform: translateY(0); opacity: 1; }
-  to { transform: translateY(-60px); opacity: 0; }
-}
+    function feed(){
+      hunger += 20;
+      happy  += 5;
+      updateBars();
+    }
 
-<script>
-let hunger=100,happy=100,energy=100;
+    function play(){
+      if(energy < 10) return;
+      happy  += 15;
+      energy -= 15;
+      hunger -= 10;
+      updateBars();
+    }
 
-function update(){
-  hunger=Math.max(0,hunger);
-  happy=Math.max(0,happy);
-  energy=Math.max(0,energy);
-  hungerBar.style.width=hunger+'%';
-  happyBar.style.width=happy+'%';
-  energyBar.style.width=energy+'%';
-}
-const hungerBar=document.getElementById('hunger');
-const happyBar=document.getElementById('happy');
-const energyBar=document.getElementById('energy');
+    function sleepPet(){
+      energy += 30;
+      hunger -= 5;
+      updateBars();
+    }
 
-function feed(){hunger+=20;happy+=5;update()}
-function play(){
-  if(energy<10)return;
-  happy+=15;energy-=15;hunger-=10;update()
-}
-function sleepPet(){energy+=30;hunger-=5;update()}
-setInterval(()=>{hunger--;happy--;energy--;update()},3000);
-update();
+    setInterval(() => {
+      hunger--;
+      happy--;
+      energy--;
+      updateBars();
+    }, 3000);
 
-<script>
-function sendMessage(){
-  const name = document.getElementById("guestName").value || "Ẩn danh";
-  const msg = document.getElementById("guestMsg").value;
-  const status = document.getElementById("status");
-  const btn = document.getElementById("sendBtn");
+    updateBars();
+  </script>
 
-  if(!msg){
-    status.textContent = "🐱 Kei đang đợi lời nhắn đó~";
-    btn.classList.add("shake");
-    return;
-  }
+  <!-- SEND MESSAGE LOGIC -->
+  <script>
+    function sendMessage(){
+      const nameInput = document.getElementById("guestName");
+      const msgInput  = document.getElementById("guestMsg");
+      const status    = document.getElementById("status");
+      const btn       = document.getElementById("sendBtn");
 
-  // hiệu ứng đang gửi
-  btn.textContent = "💌 Đang gửi...";
-  btn.classList.add("sending");
-  btn.style.animation = "pop 0.4s";
+      const name = nameInput.value || "Ẩn danh";
+      const msg  = msgInput.value.trim();
 
-  // tim bay
-  const heart = document.createElement("div");
-  heart.className = "heart";
-  heart.textContent = "💖";
-  heart.style.left = (btn.getBoundingClientRect().left + 20) + "px";
-  heart.style.top = (btn.getBoundingClientRect().top - 10) + "px";
-  document.body.appendChild(heart);
-  setTimeout(()=>heart.remove(),1200);
+      if(!msg){
+        status.textContent = "🐱 Kei đang đợi lời nhắn đó~";
+        btn.classList.add("shake");
+        btn.addEventListener("animationend", () => {
+          btn.classList.remove("shake");
+        }, { once: true });
+        return;
+      }
 
-  fetch("https://script.google.com/macros/s/AKfycbzNIFaa3CkZpt-wqPUJso_5ZVU6RQ96sqTgMlF3Wx_Hn47lbPEK6UvPq0-wxV10_qwF/exec",{
-    method:"POST",
-    body:new URLSearchParams({name:name,message:msg})
-  })
-  .then(()=>{
-    status.textContent = "💖 Kei nhận được rồi nè~";
-    guestMsg.value="";
-    guestName.value="";
-  })
-  .catch(()=>{
-    status.textContent = "😿 Gửi chưa được, thử lại nha";
-  })
-  .finally(()=>{
-    btn.textContent = "💖 Gửi";
-    btn.classList.remove("sending");
-    btn.style.animation = "";
-  });
-}
-</script>
+      // hiệu ứng đang gửi
+      btn.textContent = "💌 Đang gửi...";
+      btn.classList.add("sending");
+      btn.style.animation = "pop 0.4s";
 
-</script>
+      // trái tim bay
+      const rect = btn.getBoundingClientRect();
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.textContent = "💖";
+      heart.style.left = (rect.left + rect.width/2) + "px";
+      heart.style.top  = (rect.top - 10) + "px";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 1200);
 
+      fetch("https://script.google.com/macros/s/AKfycbzNIFaa3CkZpt-wqPUJso_5ZVU6RQ96sqTgMlF3Wx_Hn47lbPEK6UvPq0-wxV10_qwF/exec",{
+        method:"POST",
+        body:new URLSearchParams({name:name,message:msg})
+      })
+      .then(() => {
+        status.textContent = "💖 Kei nhận được rồi nè~";
+        msgInput.value = "";
+        nameInput.value = "";
+      })
+      .catch(() => {
+        status.textContent = "😿 Gửi chưa được, thử lại nha";
+      })
+      .finally(() => {
+        btn.textContent = "💖 Gửi";
+        btn.classList.remove("sending");
+        btn.style.animation = "";
+      });
+    }
+  </script>
 </body>
 </html>
-
-
