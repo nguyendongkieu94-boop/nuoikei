@@ -115,15 +115,29 @@
       font-size:11px;
       opacity:0.7;
     }
+
     /* STK nổi bật */
-    .account-number{
-      display:inline-block;
-      padding:4px 8px;
-      margin-left:2px;
+    .account-block{
+      margin-top:4px;
+      padding:8px 10px;
       background:#fff;
-      border-radius:8px;
+      border-radius:10px;
+      text-align:center;
+    }
+    .account-bank{
+      font-weight:600;
+      font-size:12px;
+      text-transform:uppercase;
+      margin-bottom:4px;
+    }
+    .account-name{
+      font-size:12px;
+      margin-bottom:4px;
+    }
+    .account-number{
+      font-size:16px;
       font-weight:700;
-      letter-spacing:0.5px;
+      letter-spacing:1px;
     }
 
     /* ====== ANIMATIONS & EFFECTS ====== */
@@ -202,12 +216,14 @@
         Nếu bạn muốn góp ít bánh thưởng / cát vệ sinh / cá hộp cho Kei,<br>
         có thể chuyển khoản cho Mòe ở đây nha:
       </p>
-      <p class="donate-text">
-        <strong>Ngân hàng:</strong> VIETCOMBANK<br>
-        <strong>Chủ tài khoản:</strong> MÒE KEI<br>
-        <strong>Số tài khoản:</strong>
-        <span id="accountNumber" class="account-number">1052956151</span>
-      </p>
+
+      <!-- BLOCK STK TO RÕ -->
+      <div class="account-block">
+        <div class="account-bank">VIETCOMBANK</div>
+        <div class="account-name">Chủ tài khoản: <strong>MÒE KEI</strong></div>
+        <div class="account-number" id="accountNumber">1052956151</div>
+      </div>
+
       <button type="button" class="donate-btn" onclick="copyAccount()">
         📋 Copy STK
       </button>
@@ -336,7 +352,6 @@
             donateStatus.textContent = "Copy không được, bạn copy tay giúp mình nha 😿 (STK: " + accNumber + ")";
           });
       } else {
-        // fallback cho trình duyệt cũ
         const temp = document.createElement("textarea");
         temp.value = accNumber;
         document.body.appendChild(temp);
