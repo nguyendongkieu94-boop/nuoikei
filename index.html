@@ -1,306 +1,127 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <title>DỰ ÁN NUÔI KEI 🐣</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<title>DỰ ÁN NUÔI KEI 🐱</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: linear-gradient(
-        135deg,
-        #ffb347 0%,
-        #ffcc80 35%,
-        #ffe0b2 65%,
-        #fff3e0 100%
-      );
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-    }
-
-    .game {
-      background: linear-gradient(
-        180deg,
-        rgba(255,255,255,0.96),
-        rgba(255,245,235,0.96)
-      );
-      width: 320px;
-      border-radius: 22px;
-      box-shadow:
-        0 12px 30px rgba(255,152,0,0.25),
-        inset 0 1px 0 rgba(255,255,255,0.8);
-      padding: 20px;
-      text-align: center;
-      position: relative;
-      backdrop-filter: blur(6px);
-    }
-
-    .game::after {
-      content: "";
-      position: absolute;
-      inset: 6px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,152,0,0.25);
-      pointer-events: none;
-    }
-
-    h1 { margin-top: 0; font-size: 22px; }
-
-    .pet {
-      font-size: 80px;
-      margin: 10px 0;
-      transition: transform 0.2s;
-    }
-
-    .pet.idle { animation: bounce 2s infinite; }
-    .pet.play { animation: wiggle 0.6s infinite; }
-    .pet.sleep { opacity: 0.8; }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
-    }
-
-    @keyframes wiggle {
-      0% { transform: rotate(0deg); }
-      25% { transform: rotate(5deg); }
-      50% { transform: rotate(0deg); }
-      75% { transform: rotate(-5deg); }
-      100% { transform: rotate(0deg); }
-    }
-
-    .stats { text-align: left; font-size: 14px; margin-top: 10px; }
-
-    .bar {
-      background: #eee;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-bottom: 8px;
-    }
-
-    .bar-inner {
-      height: 10px;
-      background: linear-gradient(
-        90deg,
-        #ff9800,
-        #ffb74d,
-        #ffe082
-      );
-      width: 100%;
-      transition: width 0.3s;
-    }
-
-    button {
-      padding: 10px;
-      border: none;
-      border-radius: 14px;
-      cursor: pointer;
-      background: linear-gradient(
-        135deg,
-        #ffb74d,
-        #ff9800
-      );
-      font-weight: 600;
-      color: #5d2b00;
-      margin: 4px;
-      transition: transform 0.15s, box-shadow 0.15s;
-    }
-
-    button:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 12px rgba(255,152,0,0.35);
-    }
-
-    textarea, input {
-      width: 100%;
-      border-radius: 10px;
-      border: 1px solid #ddd;
-      padding: 6px;
-      font-size: 13px;
-      margin-top: 6px;
-    }
-
-    .donate {
-      margin-top: 15px;
-      padding-top: 10px;
-      border-top: 1px dashed #ddd;
-      font-size: 13px;
-    }
-
-    #guestBook {
-      position: fixed;
-      bottom: 10px;
-      right: 10px;
-      width: 230px;
-      max-height: 220px;
-      overflow-y: auto;
-      background: linear-gradient(180deg, #fff8e1, #ffecb3);
-      border-radius: 14px;
-      padding: 10px;
-      font-size: 12px;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-    }
-  </style>
+<style>
+body{
+  font-family: system-ui, sans-serif;
+  background: linear-gradient(135deg,#ffb347,#fff3e0);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  margin:0;
+}
+.game{
+  width:320px;
+  background:#fffdf8;
+  border-radius:22px;
+  padding:20px;
+  box-shadow:0 12px 30px rgba(255,152,0,.3);
+  text-align:center;
+}
+.pet{font-size:80px;margin:10px 0}
+.bar{background:#eee;border-radius:10px;overflow:hidden;margin-bottom:8px}
+.bar-inner{height:10px;background:linear-gradient(90deg,#ff9800,#ffd54f)}
+button{
+  padding:10px;
+  border:none;
+  border-radius:14px;
+  background:linear-gradient(135deg,#ffb74d,#ff9800);
+  margin:4px;
+  font-weight:600;
+  cursor:pointer;
+}
+input,textarea{
+  width:100%;
+  margin-top:6px;
+  padding:8px;
+  border-radius:10px;
+  border:1px solid #ddd;
+}
+#status{font-size:12px;margin-top:6px}
+</style>
 </head>
 
 <body>
 
 <div class="game">
-  <h1>DỰ ÁN NUÔI KEI 🐱</h1>
+<h2>DỰ ÁN NUÔI KEI 🐱</h2>
 
-  <div style="font-size:13px; color:#666;">
-    Có cây, có núi, có đại địa, có tháng năm, có Kei đây.<br>
-    B còn muốn thế giới này tốt đẹp đến mức nào nữa á… 
-  </div>
+<div id="pet" class="pet">😺</div>
 
-  <div id="pet" class="pet idle">🐱</div>
+🍚 Đói
+<div class="bar"><div id="hunger" class="bar-inner"></div></div>
+😊 Vui
+<div class="bar"><div id="happy" class="bar-inner"></div></div>
+💤 Pin
+<div class="bar"><div id="energy" class="bar-inner"></div></div>
 
-  <div class="stats">
-    🍚 Đói
-    <div class="bar"><div id="hunger" class="bar-inner"></div></div>
-    😊 Vui vẻ
-    <div class="bar"><div id="happy" class="bar-inner"></div></div>
-    💤 Năng lượng
-    <div class="bar"><div id="energy" class="bar-inner"></div></div>
-  </div>
+<button onclick="feed()">🍚 Cho ăn</button>
+<button onclick="play()">🎈 Chơi</button>
+<button onclick="sleepPet()">💤 Ngủ</button>
 
-  <button onclick="feed()">🍚 Cho Mòe ăn</button>
-  <button onclick="play()">🎈 Chọt léc (Tuột pin tui nghe chời)</button>
-  <button onclick="sleepPet()">💤 Kêu Mòe đi ngủ thêm mụt chút</button>
+<hr>
 
-  <div id="message" style="margin-top:8px;font-size:13px;"></div>
-
-  <div class="donate">
-    💖 Donate gửi cá cho Mòe 🐟<br><br>
-    Vietcombank<br>
-    STK: <span id="stk">1052956151</span><br>
-    <button onclick="copySTK()">📋 Copy STK</button>
-
-    <hr>
-<div class="donate">
-  💌 <strong>Ơi tới ời thì nói gì đi ời hãy đi raaa</strong>
-
-  <input id="name" placeholder="Bạn là ai đó 🐾">
-  <textarea id="message" rows="3"
-    placeholder="Say something I'm giving up on you 🐱"></textarea>
-
-  <button onclick="sendMessage()">💖 Gửi</button>
-  <div id="status" style="margin-top:6px;font-size:12px;"></div>
-</div>
-</div>
-
-<div id="guestBook">
-  <strong>🐾 Ai đã ghé thăm Kei:</strong>
-  <div id="guestList"></div>
+<strong>💌 Gửi lời nhắn cho Kei</strong>
+<input id="guestName" placeholder="Bạn là ai nè 🐾">
+<textarea id="guestMsg" rows="3" placeholder="Nói gì đó dịu dàng cho Kei đi~"></textarea>
+<button onclick="sendMessage()">💖 Gửi</button>
+<div id="status"></div>
 </div>
 
 <script>
-let hunger = 100, happy = 100, energy = 100;
-const pet = document.getElementById('pet');
-const msg = document.getElementById('message');
+let hunger=100,happy=100,energy=100;
 
-function update() {
-  hunger = Math.max(0, hunger);
-  happy = Math.max(0, happy);
-  energy = Math.max(0, energy);
-
-  document.getElementById('hunger').style.width = hunger + '%';
-  document.getElementById('happy').style.width = happy + '%';
-  document.getElementById('energy').style.width = energy + '%';
-
-  pet.textContent = happy > 70 ? '😺' : happy > 40 ? '😸' : '🙀';
+function update(){
+  hunger=Math.max(0,hunger);
+  happy=Math.max(0,happy);
+  energy=Math.max(0,energy);
+  hungerBar.style.width=hunger+'%';
+  happyBar.style.width=happy+'%';
+  energyBar.style.width=energy+'%';
 }
+const hungerBar=document.getElementById('hunger');
+const happyBar=document.getElementById('happy');
+const energyBar=document.getElementById('energy');
 
-function feed() {
-  hunger = Math.min(100, hunger + 20);
-  happy += 5;
-  msg.textContent = 'Kei ăn nữa nè chời 🍚';
-  pet.className = 'pet idle';
-  update();
+function feed(){hunger+=20;happy+=5;update()}
+function play(){
+  if(energy<10)return;
+  happy+=15;energy-=15;hunger-=10;update()
 }
-
-function play() {
-  if (energy < 10) return msg.textContent = 'Kei tuột pin rồi 😴';
-  happy += 15;
-  energy -= 15;
-  hunger -= 10;
-  pet.className = 'pet play';
-  update();
-}
-
-function sleepPet() {
-  energy += 30;
-  hunger -= 5;
-  pet.className = 'pet sleep';
-  msg.textContent = 'Kei đi ngủ đông gòi 💤';
-  update();
-}
-
-function copySTK() {
-  navigator.clipboard.writeText(document.getElementById('stk').textContent);
-  msg.textContent = 'Đã copy STK 🐱📋';
-}
-
-function saveMessage() {
-  const name = guestName.value || 'Ẩn danh';
-  const text = guestMsg.value;
-  if (!text) return;
-
-  const data = JSON.parse(localStorage.getItem('kei_guestbook')) || [];
-  data.unshift({ name, text });
-  localStorage.setItem('kei_guestbook', JSON.stringify(data));
-
-  guestMsg.value = '';
-  guestName.value = '';
-  render();
-}
-
-function render() {
-  const list = document.getElementById('guestList');
-  const data = JSON.parse(localStorage.getItem('kei_guestbook')) || [];
-  list.innerHTML = '';
-  data.slice(0, 10).forEach(i => {
-    list.innerHTML += `<div><b>${i.name}</b>: ${i.text}</div>`;
-  });
-}
-
-render();
-setInterval(() => { hunger--; happy--; energy--; update(); }, 3000);
+function sleepPet(){energy+=30;hunger-=5;update()}
+setInterval(()=>{hunger--;happy--;energy--;update()},3000);
 update();
-</script>
-function sendMessage() {
-  const name = document.getElementById("guestName").value || "Ẩn danh";
-  const message = document.getElementById("guestMsg").value;
-  const status = document.getElementById("message");
 
-  if (!message) {
-    status.textContent = "🐱 Kei đang đợi lời nhắn của bạn đó…";
+/* ===== GỬI GOOGLE SHEET ===== */
+function sendMessage(){
+  const name=document.getElementById("guestName").value||"Ẩn danh";
+  const msg=document.getElementById("guestMsg").value;
+  const status=document.getElementById("status");
+
+  if(!msg){
+    status.textContent="🐱 Kei đang đợi lời nhắn đó~";
     return;
   }
 
-  fetch("https://script.google.com/macros/s/AKfycbzNIFaa3CkZpt-wqPUJso_5ZVU6RQ96sqTgMlF3Wx_Hn47lbPEK6UvPq0-wxV10_qwF/exec", {
-    method: "POST",
-    body: new URLSearchParams({
-      name: name,
-      message: message
-    })
+  fetch("https://script.google.com/macros/s/AKfycbzNIFaa3CkZpt-wqPUJso_5ZVU6RQ96sqTgMlF3Wx_Hn47lbPEK6UvPq0-wxV10_qwF/exec",{
+    method:"POST",
+    body:new URLSearchParams({name:name,message:msg})
   })
-  .then(() => {
-    status.textContent = "💖 Kei đã nhận được lời nhắn rồi~";
-    document.getElementById("guestName").value = "";
-    document.getElementById("guestMsg").value = "";
+  .then(()=>{
+    status.textContent="💖 Kei nhận được rồi nè~";
+    guestMsg.value="";
+    guestName.value="";
   })
-  .catch(() => {
-    status.textContent = "😿 Gửi chưa được, thử lại nha";
+  .catch(()=>{
+    status.textContent="😿 Lỗi rồi, thử lại nha";
   });
 }
+</script>
 
 </body>
 </html>
-
-
-
