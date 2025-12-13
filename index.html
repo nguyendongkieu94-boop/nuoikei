@@ -69,9 +69,38 @@ input,textarea{
 <strong>💌 Gửi lời nhắn cho Kei</strong>
 <input id="guestName" placeholder="Bạn là ai nè 🐾">
 <textarea id="guestMsg" rows="3" placeholder="Nói gì đó dịu dàng cho Kei đi~"></textarea>
-<button onclick="sendMessage()">💖 Gửi</button>
+<button id="sendBtn" onclick="sendMessage()">💖 Gửi</button>
 <div id="status"></div>
 </div>
+@keyframes pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  50% { transform: translateX(3px); }
+  75% { transform: translateX(-3px); }
+  100% { transform: translateX(0); }
+}
+
+button.sending {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.heart {
+  position: fixed;
+  font-size: 18px;
+  animation: floatUp 1.2s ease-out forwards;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-60px); opacity: 0; }
+}
 
 <script>
 let hunger=100,happy=100,energy=100;
@@ -97,32 +126,56 @@ function sleepPet(){energy+=30;hunger-=5;update()}
 setInterval(()=>{hunger--;happy--;energy--;update()},3000);
 update();
 
-/* ===== GỬI GOOGLE SHEET ===== */
+<script>
 function sendMessage(){
-  const name=document.getElementById("guestName").value||"Ẩn danh";
-  const msg=document.getElementById("guestMsg").value;
-  const status=document.getElementById("status");
+  const name = document.getElementById("guestName").value || "Ẩn danh";
+  const msg = document.getElementById("guestMsg").value;
+  const status = document.getElementById("status");
+  const btn = document.getElementById("sendBtn");
 
   if(!msg){
-    status.textContent="🐱 Kei đang đợi lời nhắn đó~";
+    status.textContent = "🐱 Kei đang đợi lời nhắn đó~";
+    btn.classList.add("shake");
     return;
   }
+
+  // hiệu ứng đang gửi
+  btn.textContent = "💌 Đang gửi...";
+  btn.classList.add("sending");
+  btn.style.animation = "pop 0.4s";
+
+  // tim bay
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.textContent = "💖";
+  heart.style.left = (btn.getBoundingClientRect().left + 20) + "px";
+  heart.style.top = (btn.getBoundingClientRect().top - 10) + "px";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),1200);
 
   fetch("https://script.google.com/macros/s/AKfycbzNIFaa3CkZpt-wqPUJso_5ZVU6RQ96sqTgMlF3Wx_Hn47lbPEK6UvPq0-wxV10_qwF/exec",{
     method:"POST",
     body:new URLSearchParams({name:name,message:msg})
   })
   .then(()=>{
-    status.textContent="💖 Kei nhận được rồi nè~";
+    status.textContent = "💖 Kei nhận được rồi nè~";
     guestMsg.value="";
     guestName.value="";
   })
   .catch(()=>{
-    status.textContent="😿 Lỗi rồi, thử lại nha";
+    status.textContent = "😿 Gửi chưa được, thử lại nha";
+  })
+  .finally(()=>{
+    btn.textContent = "💖 Gửi";
+    btn.classList.remove("sending");
+    btn.style.animation = "";
   });
 }
 </script>
 
+</script>
+
 </body>
 </html>
+
 
