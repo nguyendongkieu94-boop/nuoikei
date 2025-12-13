@@ -95,6 +95,7 @@
     .donate-text{
       margin:0 0 8px;
       line-height:1.4;
+      color:#333;
     }
     .donate-btn{
       display:inline-block;
@@ -113,6 +114,16 @@
       margin-top:6px;
       font-size:11px;
       opacity:0.7;
+    }
+    /* STK nổi bật */
+    .account-number{
+      display:inline-block;
+      padding:4px 8px;
+      margin-left:2px;
+      background:#fff;
+      border-radius:8px;
+      font-weight:700;
+      letter-spacing:0.5px;
     }
 
     /* ====== ANIMATIONS & EFFECTS ====== */
@@ -192,10 +203,10 @@
         có thể chuyển khoản cho Mòe ở đây nha:
       </p>
       <p class="donate-text">
-       <strong>Ngân hàng:</strong> VIETCOMBANK<br>
+        <strong>Ngân hàng:</strong> VIETCOMBANK<br>
         <strong>Chủ tài khoản:</strong> MÒE KEI<br>
         <strong>Số tài khoản:</strong>
-        <span id="accountNumber">1052956151</span>
+        <span id="accountNumber" class="account-number">1052956151</span>
       </p>
       <button type="button" class="donate-btn" onclick="copyAccount()">
         📋 Copy STK
@@ -310,14 +321,19 @@
       const accNumber = accEl.textContent.trim();
       const donateStatus = document.getElementById("donateStatus");
 
+      if (!accNumber) {
+        donateStatus.textContent = "Không đọc được STK, bạn kiểm tra lại giúp mình nha 😿";
+        return;
+      }
+
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(accNumber)
           .then(() => {
-            donateStatus.textContent = "Đã copy STK vào clipboard nè 💖";
-            setTimeout(() => donateStatus.textContent = "", 2000);
+            donateStatus.textContent = "STK " + accNumber + " đã được copy vào clipboard nè 💖";
+            setTimeout(() => donateStatus.textContent = "", 2500);
           })
           .catch(() => {
-            donateStatus.textContent = "Copy không được, bạn copy tay giúp mình nha 😿";
+            donateStatus.textContent = "Copy không được, bạn copy tay giúp mình nha 😿 (STK: " + accNumber + ")";
           });
       } else {
         // fallback cho trình duyệt cũ
@@ -327,10 +343,10 @@
         temp.select();
         try {
           document.execCommand("copy");
-          donateStatus.textContent = "Đã copy STK vào clipboard nè 💖";
-          setTimeout(() => donateStatus.textContent = "", 2000);
+          donateStatus.textContent = "STK " + accNumber + " đã được copy vào clipboard nè 💖";
+          setTimeout(() => donateStatus.textContent = "", 2500);
         } catch (e) {
-          donateStatus.textContent = "Copy không được, bạn copy tay giúp mình nha 😿";
+          donateStatus.textContent = "Copy không được, bạn copy tay giúp mình nha 😿 (STK: " + accNumber + ")";
         }
         document.body.removeChild(temp);
       }
@@ -338,4 +354,3 @@
   </script>
 </body>
 </html>
-
