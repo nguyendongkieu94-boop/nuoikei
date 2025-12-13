@@ -6,172 +6,363 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
+    :root{
+      --orange-main:#ff9800;
+      --orange-soft:#ffe0b2;
+      --bg-soft:#fffdf8;
+      --text-main:#2f261c;
+    }
+
+    *{box-sizing:border-box;}
+
     body{
-      font-family: system-ui, sans-serif;
-      background: linear-gradient(135deg,#ffb347,#fff3e0);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #ffe0b2 0, #ffb347 25%, #ff9a7b 55%, #fbe9e7 100%);
+      min-height:100vh;
+      margin:0;
       display:flex;
       justify-content:center;
       align-items:center;
-      min-height:100vh;
-      margin:0;
+      padding:18px;
+      color:var(--text-main);
     }
+
     .game{
-      width:320px;
-      background:#fffdf8;
-      border-radius:22px;
-      padding:20px;
-      box-shadow:0 12px 30px rgba(255,152,0,.3);
-      text-align:center;
-    }
-    .pet{
-      font-size:80px;
-      margin:10px 0;
-    }
-    .bar{
-      background:#eee;
-      border-radius:10px;
+      width:360px;
+      max-width:100%;
+      background:rgba(255,253,248,.92);
+      border-radius:24px;
+      padding:18px 18px 20px;
+      box-shadow:
+        0 18px 40px rgba(191, 87, 0, .32),
+        0 0 0 1px rgba(255,255,255,.7);
+      backdrop-filter:blur(10px);
+      position:relative;
       overflow:hidden;
-      margin-bottom:8px;
+    }
+
+    /* decorative blobs */
+    .game::before,
+    .game::after{
+      content:"";
+      position:absolute;
+      border-radius:999px;
+      filter:blur(22px);
+      opacity:.65;
+      z-index:-1;
+    }
+    .game::before{
+      width:120px;height:120px;
+      background:#ffe082;
+      top:-40px;right:-30px;
+    }
+    .game::after{
+      width:100px;height:100px;
+      background:#ffab91;
+      bottom:-40px;left:-20px;
+    }
+
+    /* header */
+    .header{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:10px;
+    }
+    .avatar-circle{
+      width:52px;
+      height:52px;
+      border-radius:999px;
+      background:linear-gradient(135deg,#ffe0b2,#ffcc80);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:30px;
+      box-shadow:0 6px 16px rgba(255,152,0,.45);
+    }
+    h2{
+      font-size:18px;
+      margin:0 0 2px;
+      letter-spacing:0.03em;
+    }
+    .header-tag{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      font-size:11px;
+      padding:2px 8px;
+      border-radius:999px;
+      background:rgba(255,255,255,.8);
+      border:1px solid rgba(255,183,77,.8);
+      color:#bf360c;
+      font-weight:600;
+      text-transform:uppercase;
+    }
+
+    .subtitle-poem{
+      font-size:13px;
+      color:#ff8f00;
+      margin:6px 0 14px;
+      line-height:1.45;
+      font-style:italic;
+      text-align:left;
+    }
+
+    .pet{
+      font-size:74px;
+      margin:4px 0 10px;
+      text-shadow:0 8px 16px rgba(255,152,0,.45);
+    }
+
+    /* section titles */
+    .section-title{
+      text-align:left;
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      color:#a15b00;
+      margin:4px 0 6px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .section-title span.icon{
+      font-size:14px;
+    }
+
+    .status-row-label{
+      font-size:12px;
+      margin-bottom:3px;
+      display:flex;
+      justify-content:space-between;
+      color:#5d4037;
+    }
+    .status-row-label span.tag{
+      font-size:11px;
+      padding:1px 6px;
+      border-radius:999px;
+      background:rgba(255,255,255,.9);
+      border:1px solid rgba(0,0,0,.04);
+    }
+
+    .bar{
+      background:#f0ece6;
+      border-radius:999px;
+      overflow:hidden;
+      margin-bottom:7px;
+      position:relative;
     }
     .bar-inner{
       height:10px;
-      background:linear-gradient(90deg,#ff9800,#ffd54f);
       width:100%;
-      transition: width 0.3s;
+      border-radius:999px;
+      background:linear-gradient(90deg,#ffb74d,#ff9800);
+      box-shadow:0 0 10px rgba(255,152,0,.65);
+      transition:width 0.35s ease-out;
+    }
+    .bar-inner.happy{
+      background:linear-gradient(90deg,#ff8a65,#ffb74d);
+    }
+    .bar-inner.energy{
+      background:linear-gradient(90deg,#81c784,#c5e1a5);
+      box-shadow:0 0 10px rgba(129,199,132,.65);
+    }
+
+    .button-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin:10px 0 4px;
     }
     button{
-      padding:10px;
+      padding:8px 10px;
       border:none;
-      border-radius:14px;
-      background:linear-gradient(135deg,#ffb74d,#ff9800);
-      margin:4px;
+      border-radius:999px;
+      background:linear-gradient(135deg,#ffcc80,#ff9800);
+      margin:0;
       font-weight:600;
       cursor:pointer;
-      box-shadow:0 8px 20px rgba(255,152,0,.35);
-      transition:transform .1s,box-shadow .1s;
+      box-shadow:0 6px 16px rgba(255,152,0,.4);
+      transition:transform .1s,box-shadow .1s,filter .1s;
+      font-size:12px;
+      color:#4e342e;
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+    }
+    button:hover{
+      filter:brightness(1.03);
+      box-shadow:0 8px 20px rgba(255,152,0,.45);
+      transform:translateY(-1px);
     }
     button:active{
-      transform:translateY(1px);
-      box-shadow:0 4px 10px rgba(255,152,0,.35);
+      transform:translateY(0px) scale(.97);
+      box-shadow:0 3px 8px rgba(255,152,0,.35);
     }
+
+    .divider{
+      height:1px;
+      width:100%;
+      background:linear-gradient(90deg,transparent,#ffcc80,#ffab91,transparent);
+      margin:12px 0 10px;
+      opacity:.8;
+    }
+
+    /* message box */
+    .message-block{
+      text-align:left;
+    }
+    .message-block strong{
+      font-size:13px;
+    }
+    .message-hint{
+      font-size:11px;
+      opacity:.75;
+      margin:2px 0 6px;
+    }
+
     input,textarea{
       width:100%;
       margin-top:6px;
-      padding:8px;
+      padding:8px 9px;
       border-radius:10px;
-      border:1px solid #ddd;
+      border:1px solid #e0d4c8;
       font-family:inherit;
-      font-size:14px;
+      font-size:13px;
+      background:rgba(255,255,255,.95);
+      transition:border .15s, box-shadow .15s, background .15s;
+    }
+    input:focus,textarea:focus{
+      outline:none;
+      border-color:#ffb74d;
+      box-shadow:0 0 0 1px rgba(255,183,77,.4);
+      background:#fffdf8;
     }
     #status{
-      font-size:12px;
+      font-size:11px;
       margin-top:6px;
       min-height:1.2em;
+      color:#6d4c41;
     }
 
-    /* thơ dưới tiêu đề */
-    .subtitle-poem{
-      font-size:14px;
-      color:#ff9800;
-      margin-top:-4px;
-      margin-bottom:12px;
-      line-height:1.4;
-      font-style:italic;
+    .send-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      margin-top:8px;
+    }
+    #sendBtn{
+      flex:0 0 auto;
+      padding-inline:14px;
+    }
+    .little-tip{
+      font-size:10px;
+      opacity:.65;
+      text-align:right;
+      flex:1;
     }
 
     /* donate box */
     .donate-box{
-      margin-top:16px;
+      margin-top:10px;
       padding:10px 12px;
-      border-radius:14px;
+      border-radius:16px;
       background:#fff7e6;
       font-size:13px;
       text-align:left;
+      border:1px dashed rgba(255,171,64,.8);
+      position:relative;
+    }
+    .donate-box::before{
+      content:"";
+      position:absolute;
+      width:32px;height:32px;
+      border-radius:50%;
+      background:radial-gradient(circle at 30% 30%,#fff,#ffe0b2);
+      top:-18px;right:12px;
+      box-shadow:0 6px 12px rgba(255,213,79,.65);
     }
     .donate-title{
-      font-weight:600;
-      margin-bottom:4px;
+      font-weight:700;
+      margin-bottom:2px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:13px;
+    }
+    .donate-pill{
+      font-size:10px;
+      padding:2px 8px;
+      border-radius:999px;
+      background:rgba(255,255,255,.95);
+      border:1px solid rgba(255,204,128,.9);
+      text-transform:uppercase;
+      letter-spacing:0.05em;
+      color:#e65100;
     }
     .donate-text{
-      margin:0 0 8px;
+      margin:4px 0 8px;
       line-height:1.4;
-      color:#333;
-    }
-    .donate-btn{
-      display:inline-block;
-      padding:8px 14px;
-      border-radius:999px;
-      background:linear-gradient(135deg,#ffb74d,#ff9800);
-      text-decoration:none;
-      color:#fff;
-      font-weight:600;
-      box-shadow:0 6px 16px rgba(255,152,0,.35);
-      font-size:13px;
-      border:none;
-      cursor:pointer;
-    }
-    .donate-note{
-      margin-top:6px;
-      font-size:11px;
-      opacity:0.7;
+      color:#5d4037;
+      font-size:12px;
     }
 
-    /* STK nổi bật */
     .account-block{
       margin-top:4px;
       padding:8px 10px;
-      background:#fff;
-      border-radius:10px;
+      background:#ffffff;
+      border-radius:12px;
       text-align:center;
+      border:1px solid rgba(255,204,128,.8);
     }
     .account-bank{
-      font-weight:600;
-      font-size:12px;
+      font-weight:700;
+      font-size:11px;
       text-transform:uppercase;
-      margin-bottom:4px;
+      margin-bottom:2px;
+      color:#e65100;
     }
     .account-name{
-      font-size:12px;
-      margin-bottom:4px;
+      font-size:11px;
+      margin-bottom:3px;
     }
     .account-number{
-      font-size:16px;
-      font-weight:700;
+      font-size:17px;
+      font-weight:800;
       letter-spacing:1px;
+      color:#3e2723;
     }
 
-    /* ====== ANIMATIONS & EFFECTS ====== */
-    @keyframes pop {
-      0% { transform: scale(1); }
-      40% { transform: scale(1.15); }
-      100% { transform: scale(1); }
+    .donate-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      margin-top:8px;
+    }
+    #donateStatus{
+      font-size:11px;
+      opacity:.8;
     }
 
-    @keyframes shake {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-3px); }
-      50% { transform: translateX(3px); }
-      75% { transform: translateX(-3px); }
-      100% { transform: translateX(0); }
+    .donate-btn{
+      padding-inline:12px;
+      white-space:nowrap;
     }
 
-    @keyframes floatUp {
-      from { transform: translateY(0); opacity: 1; }
-      to   { transform: translateY(-60px); opacity: 0; }
-    }
-
-    button.sending {
-      opacity: 0.7;
-      pointer-events: none;
-    }
-
+    /* animations */
     .heart {
       position: fixed;
       font-size: 18px;
       animation: floatUp 1.2s ease-out forwards;
       pointer-events:none;
     }
-
+    button.sending {
+      opacity: 0.7;
+      pointer-events: none;
+    }
     .shake {
       animation: shake 0.4s;
     }
@@ -180,7 +371,17 @@
 
 <body>
   <div class="game">
-    <h2>DỰ ÁN NUÔI KEI 🐱</h2>
+    <!-- HEADER -->
+    <div class="header">
+      <div class="avatar-circle">😺</div>
+      <div>
+        <h2>DỰ ÁN NUÔI KEI 🐱</h2>
+        <div class="header-tag">
+          <span>pet project</span> · <span>nuôi Mòe bằng tình thương</span>
+        </div>
+      </div>
+    </div>
+
     <div class="subtitle-poem">
       Có cây, có núi, có đại địa, có tháng năm.<br>
       Có Kei đây, bạn còn mong thế giới này tốt đẹp đến chừng nào nữa á... 🐾
@@ -188,45 +389,82 @@
 
     <div id="pet" class="pet">😺</div>
 
-    🍚 Bụng mặp của Mòe...
+    <!-- STATUS -->
+    <div class="section-title">
+      <span class="icon">📊</span> CHỈ SỐ SỐNG CÒN CỦA MÒE
+    </div>
+
+    <div class="status-row-label">
+      <span>🍚 Bụng mặp...</span>
+      <span class="tag">no = ít quạu hơn</span>
+    </div>
     <div class="bar"><div id="hunger" class="bar-inner"></div></div>
-    😺 Độ hớn của Mòe...
-    <div class="bar"><div id="happy" class="bar-inner"></div></div>
-    🔋 Độ đầy Pin của Mòe...
-    <div class="bar"><div id="energy" class="bar-inner"></div></div>
 
-    <button onclick="feed()">🍚 Cho một con cá để nhai nhai nhai</button>
-    <button onclick="play()">🎈 Bắt chạy bộ sộc sộc</button>
-    <button onclick="sleepPet()">💤 Cho Kei ngủ thêm mụt miếng</button>
+    <div class="status-row-label">
+      <span>😺 Độ hớn...</span>
+      <span class="tag">hớn = gừ gừ gừ</span>
+    </div>
+    <div class="bar"><div id="happy" class="bar-inner happy"></div></div>
 
-    <hr>
+    <div class="status-row-label">
+      <span>🔋 Độ đầy pin...</span>
+      <span class="tag">pin thấp là cào đó</span>
+    </div>
+    <div class="bar"><div id="energy" class="bar-inner energy"></div></div>
 
-    <strong>💌 Gửi lời nhắn cho Kei</strong>
-    <input id="guestName" placeholder="Bạn là ai nè 🐾">
-    <textarea id="guestMsg" rows="3" placeholder="Nói gì đó dịu dàng cho Kei đi~"></textarea>
-    <button id="sendBtn" onclick="sendMessage()">💖 Gửi</button>
-    <div id="status"></div>
+    <div class="button-row">
+      <button onclick="feed()">🍚 Cho một con cá để nhai nhai nhai</button>
+      <button onclick="play()">🎈 Bắt chạy bộ sộc sộc</button>
+      <button onclick="sleepPet()">💤 Cho Kei ngủ thêm mụt miếng</button>
+    </div>
 
-    <hr>
+    <div class="divider"></div>
 
-    <!-- DONATE NUÔI MÒE -->
+    <!-- MESSAGE -->
+    <div class="message-block">
+      <strong>💌 Gửi lời nhắn cho Kei</strong>
+      <div class="message-hint">Viết cho Mòe một cái gì đó dịu dàng, Kei đọc được là vui lắm á.</div>
+
+      <input id="guestName" placeholder="Bạn là ai nè 🐾">
+      <textarea id="guestMsg" rows="3" placeholder="Kể Kei nghe hôm nay bạn thế nào rồi~"></textarea>
+
+      <div class="send-row">
+        <button id="sendBtn" onclick="sendMessage()">💖 Gửi cho Kei</button>
+        <div class="little-tip">Nếu có gì không vui, cứ gửi cho Mòe, Kei ôm nè 🐱</div>
+      </div>
+
+      <div id="status"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- DONATE -->
     <div class="donate-box">
-      <div class="donate-title">🐾 Ủng hộ nuôi Kei</div>
+      <div class="donate-title">
+        🐾 Ủng hộ nuôi Kei
+        <span class="donate-pill">optional</span>
+      </div>
       <p class="donate-text">
-        Nếu bạn muốn góp ít bánh thưởng / cát vệ sinh / cá hộp cho Kei:<br>
+        Nếu muốn góp ít bánh thưởng / cát vệ sinh / cá hộp cho Kei,
+        bạn có thể gửi Mòe một miếng &lt;3
       </p>
 
-      <!-- BLOCK STK TO RÕ -->
       <div class="account-block">
         <div class="account-bank">VIETCOMBANK</div>
         <div class="account-name">Chủ tài khoản: <strong>MÒE KEI</strong></div>
         <div class="account-number" id="accountNumber">1052956151</div>
       </div>
 
-      <button type="button" class="donate-btn" onclick="copyAccount()">
-        📋 Copy STK
-      </button>
-      <div id="donateStatus" class="donate-note"></div>
+      <div class="donate-row">
+        <button type="button" class="donate-btn" onclick="copyAccount()">
+          📋 Copy STK
+        </button>
+        <div id="donateStatus"></div>
+      </div>
+
+      <div class="donate-note">
+        Gợi ý nội dung chuyển khoản: <strong>“Nuôi Mòe Kei”</strong> hoặc một lời chúc gì đó dễ thương cũng được 💛
+      </div>
     </div>
   </div>
 
@@ -324,7 +562,7 @@
         status.textContent = "😿 Gửi chưa được, thử lại nha";
       })
       .finally(() => {
-        btn.textContent = "💖 Gửi";
+        btn.textContent = "💖 Gửi cho Kei";
         btn.classList.remove("sending");
         btn.style.animation = "";
       });
@@ -344,7 +582,7 @@
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(accNumber)
           .then(() => {
-            donateStatus.textContent = "STK " + accNumber + " đã được copy vào clipboard nè 💖";
+            donateStatus.textContent = "Đã copy STK " + accNumber + " vào clipboard nè 💖";
             setTimeout(() => donateStatus.textContent = "", 2500);
           })
           .catch(() => {
@@ -357,7 +595,7 @@
         temp.select();
         try {
           document.execCommand("copy");
-          donateStatus.textContent = "STK " + accNumber + " đã được copy vào clipboard nè 💖";
+          donateStatus.textContent = "Đã copy STK " + accNumber + " vào clipboard nè 💖";
           setTimeout(() => donateStatus.textContent = "", 2500);
         } catch (e) {
           donateStatus.textContent = "Copy không được, bạn copy tay giúp mình nha 😿 (STK: " + accNumber + ")";
@@ -368,4 +606,3 @@
   </script>
 </body>
 </html>
-
