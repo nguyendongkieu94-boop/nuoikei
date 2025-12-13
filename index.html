@@ -154,7 +154,7 @@
 
   <div style="font-size:13px; color:#666;">
     Có cây, có núi, có đại địa, có tháng năm, có Kei đây.<br>
-    B còn muốn thế giới này tốt đẹp đến mức nào nữa á… 🐱
+    B còn muốn thế giới này tốt đẹp đến mức nào nữa á… 
   </div>
 
   <div id="pet" class="pet idle">🐱</div>
@@ -181,18 +181,16 @@
     <button onclick="copySTK()">📋 Copy STK</button>
 
     <hr>
+<div class="donate">
+  💌 <strong>Ơi tới ời thì nói gì đi ời hãy đi raaa</strong>
 
-    💌 <strong>Ơi tới ời thì để lại lời nhắn gì đi á:</strong>
-  <iframe 
-    src="https://docs.google.com/forms/d/e/1FAIpQLSfHYFj3nfZYVXly9Kl4NYqo77VSa9CURhM14yGTRLoBcVFo0g/viewform?embedded=true"
-    width="100%"
-    height="500"
-    frameborder="0"
-    marginheight="0"
-    marginwidth="0">
-    Đang tải…
-  </iframe>
-  </div>
+  <input id="name" placeholder="Bạn là ai đó 🐾">
+  <textarea id="message" rows="3"
+    placeholder="Say something I'm giving up on you 🐱"></textarea>
+
+  <button onclick="sendMessage()">💖 Gửi</button>
+  <div id="status" style="margin-top:6px;font-size:12px;"></div>
+</div>
 </div>
 
 <div id="guestBook">
@@ -274,8 +272,35 @@ render();
 setInterval(() => { hunger--; happy--; energy--; update(); }, 3000);
 update();
 </script>
+function sendMessage() {
+  const name = document.getElementById("guestName").value || "Ẩn danh";
+  const message = document.getElementById("guestMsg").value;
+  const status = document.getElementById("message");
+
+  if (!message) {
+    status.textContent = "🐱 Kei đang đợi lời nhắn của bạn đó…";
+    return;
+  }
+
+  fetch("https://script.google.com/macros/s/AKfycbzNIFaa3CkZpt-wqPUJso_5ZVU6RQ96sqTgMlF3Wx_Hn47lbPEK6UvPq0-wxV10_qwF/exec", {
+    method: "POST",
+    body: new URLSearchParams({
+      name: name,
+      message: message
+    })
+  })
+  .then(() => {
+    status.textContent = "💖 Kei đã nhận được lời nhắn rồi~";
+    document.getElementById("guestName").value = "";
+    document.getElementById("guestMsg").value = "";
+  })
+  .catch(() => {
+    status.textContent = "😿 Gửi chưa được, thử lại nha";
+  });
+}
 
 </body>
 </html>
+
 
 
