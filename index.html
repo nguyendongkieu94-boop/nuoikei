@@ -69,6 +69,16 @@
       min-height:1.2em;
     }
 
+    /* thơ dưới tiêu đề */
+    .subtitle-poem{
+      font-size:14px;
+      color:#ff9800;
+      margin-top:-4px;
+      margin-bottom:12px;
+      line-height:1.4;
+      font-style:italic;
+    }
+
     /* ====== ANIMATIONS & EFFECTS ====== */
     @keyframes pop {
       0% { transform: scale(1); }
@@ -110,18 +120,20 @@
 <body>
   <div class="game">
     <h2>DỰ ÁN NUÔI KEI 🐱</h2>
-<div class="subtitle-poem">
-Có cây, có núi, có đại địa, có tháng năm<br>
-  Có Kei đây, bạn còn mong thế giới này tốt đẹp đến chừng nào nữa á... 🐾
-</div>
+    <div class="subtitle-poem">
+      Có cây, có núi, có đại địa, có tháng năm.<br>
+      Có Kei đây, bạn còn mong thế giới này tốt đẹp đến chừng nào nữa á... 🐾
+    </div>
+
     <div id="pet" class="pet">😺</div>
 
-    🍚 Đói
-    <div class="bar"><div id="BỤNG BỰ" class="bar-inner"></div></div>
-    😊 Vui
-    <div class="bar"><div id="HỚN" class="bar-inner"></div></div>
-    💤 Pin
-    <div class="bar"><div id="PIN" class="bar-inner"></div></div>
+    🍚 BỤNG MẶP CỦA MÒE
+    <div class="bar"><div id="hunger" class="bar-inner"></div></div>
+    😺 ĐỘ HỚN CỦA MÒE
+    <div class="bar"><div id="happy" class="bar-inner"></div></div>
+    🔋 ĐỘ ĐẦY PIN CỦA MÒE
+    <div class="bar"><div id="energy" class="bar-inner"></div></div>
+
 
     <button onclick="feed()">🍚 Cho một con cá để nhai nhai nhai</button>
     <button onclick="play()">🎈 Bắt chạy bộ sộc sộc</button>
@@ -238,6 +250,3 @@ Có cây, có núi, có đại địa, có tháng năm<br>
   </script>
 </body>
 </html>
-
-
-
