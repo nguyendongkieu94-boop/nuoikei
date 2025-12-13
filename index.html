@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>DỰ ÁN NUÔI KEI 🐱</title>
+  <title>DỰ ÁN NUÔI KEI 🐱 (V2)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -109,7 +109,7 @@
 
 <body>
   <div class="game">
-    <h2>DỰ ÁN NUÔI KEI 🐱</h2>
+    <h2>DỰ ÁN NUÔI KEI 🐱 (V2)</h2>
 
     <div id="pet" class="pet">😺</div>
 
@@ -133,8 +133,8 @@
     <div id="status"></div>
   </div>
 
-  <!-- GAME LOGIC -->
   <script>
+    // ===== GAME NUÔI KEI =====
     let hunger = 100, happy = 100, energy = 100;
 
     const hungerBar = document.getElementById('hunger');
@@ -179,10 +179,8 @@
     }, 3000);
 
     updateBars();
-  </script>
 
-  <!-- SEND MESSAGE LOGIC -->
-  <script>
+    // ===== GỬI LỜI NHẮN =====
     function sendMessage(){
       const nameInput = document.getElementById("guestName");
       const msgInput  = document.getElementById("guestMsg");
