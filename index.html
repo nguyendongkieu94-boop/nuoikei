@@ -79,6 +79,42 @@
       font-style:italic;
     }
 
+    /* donate box */
+    .donate-box{
+      margin-top:16px;
+      padding:10px 12px;
+      border-radius:14px;
+      background:#fff7e6;
+      font-size:13px;
+      text-align:left;
+    }
+    .donate-title{
+      font-weight:600;
+      margin-bottom:4px;
+    }
+    .donate-text{
+      margin:0 0 8px;
+      line-height:1.4;
+    }
+    .donate-btn{
+      display:inline-block;
+      padding:8px 14px;
+      border-radius:999px;
+      background:linear-gradient(135deg,#ffb74d,#ff9800);
+      text-decoration:none;
+      color:#fff;
+      font-weight:600;
+      box-shadow:0 6px 16px rgba(255,152,0,.35);
+      font-size:13px;
+      border:none;
+      cursor:pointer;
+    }
+    .donate-note{
+      margin-top:6px;
+      font-size:11px;
+      opacity:0.7;
+    }
+
     /* ====== ANIMATIONS & EFFECTS ====== */
     @keyframes pop {
       0% { transform: scale(1); }
@@ -134,7 +170,6 @@
     🔋 ĐỘ ĐẦY PIN CỦA MÒE
     <div class="bar"><div id="energy" class="bar-inner"></div></div>
 
-
     <button onclick="feed()">🍚 Cho một con cá để nhai nhai nhai</button>
     <button onclick="play()">🎈 Bắt chạy bộ sộc sộc</button>
     <button onclick="sleepPet()">💤 Cho Kei ngủ thêm mụt miếng</button>
@@ -146,6 +181,27 @@
     <textarea id="guestMsg" rows="3" placeholder="Nói gì đó dịu dàng cho Kei đi~"></textarea>
     <button id="sendBtn" onclick="sendMessage()">💖 Gửi</button>
     <div id="status"></div>
+
+    <hr>
+
+    <!-- DONATE NUÔI MÒE -->
+    <div class="donate-box">
+      <div class="donate-title">🐾 Ủng hộ nuôi Kei</div>
+      <p class="donate-text">
+        Nếu bạn muốn góp ít bánh thưởng / cát vệ sinh / cá hộp cho Kei,<br>
+        có thể chuyển khoản cho Mòe ở đây nha:
+      </p>
+      <p class="donate-text">
+        <!-- 🔻 SỬA 3 DÒNG NÀY THEO THÔNG TIN THẬT CỦA BẠN 🔻 -->
+        <strong>Ngân hàng:</strong> Vietcombank <br>
+        <strong>Số tài khoản nuôi Mòe:</strong>
+        <span id="accountNumber">1052956151</span>
+      </p>
+      <button type="button" class="donate-btn" onclick="copyAccount()">
+        📋 Copy STK
+      </button>
+      <div id="donateStatus" class="donate-note"></div>
+    </div>
   </div>
 
   <script>
@@ -246,6 +302,38 @@
         btn.classList.remove("sending");
         btn.style.animation = "";
       });
+    }
+
+    // ===== COPY STK DONATE =====
+    function copyAccount(){
+      const accEl = document.getElementById("accountNumber");
+      const accNumber = accEl.textContent.trim();
+      const donateStatus = document.getElementById("donateStatus");
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(accNumber)
+          .then(() => {
+            donateStatus.textContent = "Đã copy STK vào clipboard nè 💖";
+            setTimeout(() => donateStatus.textContent = "", 2000);
+          })
+          .catch(() => {
+            donateStatus.textContent = "Copy không được, bạn copy tay giúp mình nha 😿";
+          });
+      } else {
+        // fallback cho trình duyệt cũ
+        const temp = document.createElement("textarea");
+        temp.value = accNumber;
+        document.body.appendChild(temp);
+        temp.select();
+        try {
+          document.execCommand("copy");
+          donateStatus.textContent = "Đã copy STK vào clipboard nè 💖";
+          setTimeout(() => donateStatus.textContent = "", 2000);
+        } catch (e) {
+          donateStatus.textContent = "Copy không được, bạn copy tay giúp mình nha 😿";
+        }
+        document.body.removeChild(temp);
+      }
     }
   </script>
 </body>
